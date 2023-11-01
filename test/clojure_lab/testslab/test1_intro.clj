@@ -1,7 +1,6 @@
 (ns clojure-lab.testslab.test1-intro
 (:require [clojure.test :refer [deftest testing is are]]
-          [matcher-combinators.test] ;;for match?
-          [matcher-combinators.matchers :as m]
+          [matcher-combinators.test] ;;for match? 
           ))
 
 ;;sample1 shows how failing report looks like for simple cases with/without matcher
@@ -19,8 +18,8 @@
        (is (match? 1 result))))))
 
 
-(deftest sample2-multi-scenario []
-  (testing "feature 1"
+(deftest sample2-multi-scenario [] 
+  (testing "feature 1" 
     (testing "scenario 1"
       (let [;;given
             fixture1 1

@@ -6,6 +6,8 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/core.async "1.6.673"]
                  [nubank/matcher-combinators "3.8.3"]
+                 [tortue/spy "2.14.0"]
+                 [com.taoensso/timbre "5.2.1"]
                  ]
   :main ^:skip-aot clojure-lab.core
   :target-path "target/%s"
