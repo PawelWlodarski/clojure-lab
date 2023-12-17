@@ -6,7 +6,7 @@
 
 
 
-;;reducers
+;;reducers composition
 (def ^:private increment-even (comp (r/filter even?) (r/map inc)))
 (comment
   (increment-even [1 2 2 3 3 4])  ;;folder tpe
@@ -15,14 +15,7 @@
   (into [] (increment-even [1 2 2 3 3 4])))
 
 
-;;parallel
-
-(comment 
-  (r/fold + (increment-even [1 2 2 3 3 4]))
-  (r/fold into conj (increment-even [1 1 1 2 2 3 3 4 5 5]) )
-  )
-
-;;only with standard reduce
+;;problems with only with standard reduce
 (comment
   ;; error (reduce even?)
   (let
