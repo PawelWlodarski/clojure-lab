@@ -9,6 +9,15 @@
 (reduce conj (r/map inc range-to-100-by-3))
 ;;mapcat reducer
 (reduce conj (r/mapcat (fn [e] [(dec e) (inc e)]) range-to-100-by-3))
+
+;;example with mapcat over many ranges
+(->>
+ (range 10)
+ (r/map range)
+ (r/mapcat conj)
+ (into [])
+ )
+
 ;;take reducer
 (reduce conj (r/take 5 range-to-100-by-3))
 ;;take-while reducer
