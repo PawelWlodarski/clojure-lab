@@ -18,7 +18,7 @@
    t2 - finally we return to outer go but in a different  thread
    "
   []
-  (letfn [(sleep [t]
+  (letfn [(go-with-sleep [t]
             (go
               (print-thread-name "inner go 1") ;; t3
               (Thread/sleep t)
@@ -27,7 +27,7 @@
     (print-thread-name "main 1") ;;m1
     (go
       (print-thread-name "outer go 1") ;;t1
-      (let [result (sleep 500)]
+      (let [result (go-with-sleep 500)]
         (println  (str "go result is : " (type result)))
         (print-thread-name "outer go 2") ;; t1
         (println (<! result))
@@ -54,7 +54,7 @@
   
   []
   
-  (letfn [(sleep [t]
+  (letfn [(go-with-sleep [t]
             (async/thread
               (print-thread-name "inner go 1") ;;t2
               (Thread/sleep t)
@@ -63,8 +63,8 @@
     (print-thread-name "main 1") ;;m1
     (go
       (print-thread-name "outer go 1") ;;t1
-      (let [result (sleep 500)]
-        (println  (str "go result is : " (type result)))
+      (let [result (go-with-sleep 500)]
+        (println  (str "async/thread result is : " (type result)))
         (print-thread-name "outer go 2")
         (println (<! result))
         (print-thread-name "outer go 3")))))
@@ -75,19 +75,20 @@
      is populated in separate thread"
   []
   
-  (letfn [(sleep [t]
+  (letfn [(future-with-sleep [t]
             (future
               (print-thread-name "inner future 1")'
               (Thread/sleep t)
               (print-thread-name "inner future 2")
               (>!! c 69)
+              ;;(c >!! 69)
               ;; try (c >!! 69)
               (print-thread-name "inner future 3")
               ))]
     (print-thread-name "main 1")
     (go
       (print-thread-name "outer go 1") 
-      (sleep 500)
+      (future-with-sleep 500)
       (print-thread-name "outer go 2")
       (println (str "result from manual channel : " (<! c)))
       (print-thread-name "outer go 3")))
@@ -109,7 +110,7 @@
   (print-thread-name "main 3")
   ;;second take
   (async/put! c "message2")
-  (async/take! c #(println (str "second take : " % ", in thread : " (thread-name))) false) ;;on-valler? false 
+  (async/take! c #(println (str "second take : " % ", in thread : " (thread-name))) false) ;;on-caller? false 
 
   ;;third take
   (async/put! c "message3")
@@ -127,7 +128,7 @@
   (Thread/sleep 2000)
   (async/close! c))
 
-
+;;example with go-loop - not supported by common-try-catch
 (defn example5-producer-consumer []
 "
  A channel is created in 'main thread scope'
