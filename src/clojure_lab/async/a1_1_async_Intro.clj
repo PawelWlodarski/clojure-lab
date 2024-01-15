@@ -102,7 +102,7 @@
 []
   (let [c (async/chan 10)]
     (print-thread-name "main 1")
-    (async/put! c "message1")
+    (async/put! c "message1" #(println "first put : " %)) ;;because buffer is 10 put succeed imediatelly
     (async/take! c #(println (str "first take : " % ", in thread : " (thread-name))))
     (print-thread-name "main 2"))
 
@@ -127,6 +127,12 @@
   (print-thread-name "main 4")
   (Thread/sleep 2000)
   (async/close! c))
+
+;;put will not succeed imediately
+(defn example4b-randez-vous-channel []
+  (let [c (async/chan)]
+    (async/put! c "message1" #(println "first put : " %))
+    (async/take! c #(println (str "first take : " % ", in thread : " (thread-name))))))
 
 ;;example with go-loop - not supported by common-try-catch
 (defn example5-producer-consumer []

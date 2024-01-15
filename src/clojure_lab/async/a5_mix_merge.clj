@@ -83,8 +83,9 @@
     (put! input1 "message14")
     (put! input1 "message15")
     (put! input1 "message16")
+    (put! input2 "message24")
     
-    (toggle mixer {input1 {:mute false}})  ;;uncomment for the second run
+    ;;(toggle mixer {input1 {:mute false}})  ;;uncomment for the second run
 
     (println "1: " (<!! output)) 
     (println "2: " (<!! output)) 
